@@ -1,0 +1,8 @@
+{
+    "livePreview.defaultPreviewPath": "/index.html",
+    "githubPullRequests.remotes": [
+        "origin",
+        "upstream",
+        ""
+    ]
+}
