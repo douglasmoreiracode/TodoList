@@ -1,0 +1,388 @@
+<html lang="pt-BR"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard To Do List</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body data-theme="light">
+    <main class="layout">
+      <div class="top-controls">
+        <button type="button" class="theme-icon-btn" id="theme-toggle-icon" aria-label="Ativar dark mode" title="Ativar dark mode" data-next-theme="dark">
+          <span class="theme-icon" aria-hidden="true">☀</span>
+        </button>
+      </div>
+
+      <header class="header">
+        <div>
+          <h1>Bem-vindo!</h1>
+          <p class="subtitle">Organize seu dia e acompanhe o progresso das suas tarefas.</p>
+        </div>
+        <div class="header-actions">
+          
+        
+          <button class="ghost" type="button" id="export-progress">Exportar progresso</button>
+          <button class="ghost" type="button" id="load-progress">Carregar progresso</button>
+          <input type="file" id="file-input-load" accept=".json" style="display: none;">
+          <button class="add-task-button" type="button" id="open-task-form">+ Nova tarefa</button>
+        </div>
+      </header>
+
+      <section class="grid">
+        <div class="card span-4" id="dashboard-accordion">
+          <header class="card-header accordion-header">
+            <h2 id="dashboard-accordion-title">Dashboard</h2>
+            <button type="button" class="ghost" id="dashboard-accordion-toggle" aria-expanded="false" aria-controls="dashboard-accordion-panel" aria-label="Alternar painel Dashboard">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                <path d="M6 15l6-6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+              </svg>
+            </button>
+          </header>
+          <div id="dashboard-accordion-panel" class="accordion-panel" hidden="">
+            <div class="inner-grid">
+              <div class="card span-2" id="status-bars-card">
+                <header class="card-header">
+                  <h2>Status das tarefas</h2>
+                  <span class="card-caption">Distribuição por percentual</span>
+                </header>
+                <div class="progress-list" id="progress-bars">
+        <div class="progress-item">
+          <span class="progress-label">A Fazer</span>
+          <div class="progress-bar">
+            <div class="progress-fill" style="background:#f97316; width:14%"></div>
+          </div>
+          <span class="progress-value">14%</span>
+        </div>
+      
+        <div class="progress-item">
+          <span class="progress-label">Progredindo</span>
+          <div class="progress-bar">
+            <div class="progress-fill" style="background:#0ea5e9; width:43%"></div>
+          </div>
+          <span class="progress-value">43%</span>
+        </div>
+      
+        <div class="progress-item">
+          <span class="progress-label">Concluída</span>
+          <div class="progress-bar">
+            <div class="progress-fill" style="background:#22c55e; width:43%"></div>
+          </div>
+          <span class="progress-value">43%</span>
+        </div>
+      </div>
+              </div>
+
+              <div class="card" id="task-counters-card">
+                <header class="card-header">
+                  <h2>Contagem de tarefas</h2>
+                  <span class="card-caption">Atualiza conforme os status</span>
+                </header>
+                <div class="counter-grid">
+                  <div class="counter-item">
+                    <span class="counter-label">A Fazer</span>
+                    <span class="counter-value" data-status="todo">1</span>
+                  </div>
+                  <div class="counter-item">
+                    <span class="counter-label">Progredindo</span>
+                    <span class="counter-value" data-status="progress">3</span>
+                  </div>
+                  <div class="counter-item">
+                    <span class="counter-label">Concluídas</span>
+                    <span class="counter-value" data-status="done">3</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card" id="weekly-calendar-card">
+                <header class="card-header">
+                  <h2>Horas na semana</h2>
+                  <span class="card-caption">Acompanhe a distribuição diária</span>
+                </header>
+                <div class="week-calendar" id="weekly-calendar">
+        <div class="week-day ">
+          <strong>Segunda-feira</strong>
+          <span>6 h trabalhadas</span>
+        </div>
+      
+        <div class="week-day ">
+          <strong>Terça-feira</strong>
+          <span>7 h trabalhadas</span>
+        </div>
+      
+        <div class="week-day ">
+          <strong>Quarta-feira</strong>
+          <span>5 h trabalhadas</span>
+        </div>
+      
+        <div class="week-day ">
+          <strong>Quinta-feira</strong>
+          <span>6 h trabalhadas</span>
+        </div>
+      
+        <div class="week-day ">
+          <strong>Sexta-feira</strong>
+          <span>4 h trabalhadas</span>
+        </div>
+      </div>
+              </div>
+
+              <div class="card span-2" id="percent-card">
+                <header class="card-header">
+                  <h2>Percentual geral</h2>
+                  <span class="card-caption">Resumo dos estados das tarefas</span>
+                </header>
+                <div class="percent-wrapper">
+                  <div class="donut" id="status-donut" style="background: conic-gradient(rgb(249, 115, 22) 0deg, rgb(249, 115, 22) 50.4deg, rgb(14, 165, 233) 50.4deg, rgb(14, 165, 233) 205.2deg, rgb(34, 197, 94) 205.2deg, rgb(34, 197, 94) 360deg);">
+                    <div class="donut-center">
+                      <span>Total</span>
+                      <strong id="total-tasks">7</strong>
+                      <small>tarefas</small>
+                    </div>
+                  </div>
+                  <ul class="legend" id="percent-legend">
+      <li class="legend-item">
+        <span class="legend-bullet" style="background:#f97316"></span>
+        <div class="legend-text">
+          <strong>A Fazer</strong>
+          <span>14% • 1 tarefas</span>
+        </div>
+      </li>
+    
+      <li class="legend-item">
+        <span class="legend-bullet" style="background:#0ea5e9"></span>
+        <div class="legend-text">
+          <strong>Progredindo</strong>
+          <span>43% • 3 tarefas</span>
+        </div>
+      </li>
+    
+      <li class="legend-item">
+        <span class="legend-bullet" style="background:#22c55e"></span>
+        <div class="legend-text">
+          <strong>Concluída</strong>
+          <span>43% • 3 tarefas</span>
+        </div>
+      </li>
+    </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" id="pomodoro-card">
+          <header class="card-header">
+            <h2>Time Tracker</h2>
+            <span class="card-caption">Ciclos de Pomodoro</span>
+          </header>
+          <div class="pomodoro">
+            <div class="timer-display">
+              <svg class="timer-ring" viewBox="0 0 120 120">
+                <circle class="timer-track" cx="60" cy="60" r="54"></circle>
+                <circle class="timer-progress" cx="60" cy="60" r="54" style="stroke-dashoffset: 339.292;"></circle>
+              </svg>
+              <div class="timer-info">
+                <span class="timer-label">Foco</span>
+                <span class="timer-value" id="timer-value">25:00</span>
+              </div>
+            </div>
+            <div class="timer-controls">
+              <button type="button" id="toggle-timer">Iniciar</button>
+              <button type="button" id="reset-timer" class="ghost">Reiniciar</button>
+            </div>
+          </div>
+        </div>
+
+        
+
+        <div class="card span-3" id="agenda-card">
+          <header class="card-header">
+            <div>
+              <h2>Agenda da semana</h2>
+              <span class="card-caption">Organize o início e término das tarefas</span>
+            </div>
+            <button class="ghost" type="button" id="toggle-form">Adicionar tarefa</button>
+          </header>
+          <form id="task-form" class="task-form" hidden="">
+            <div class="form-grid form-70-30">
+              <label class="field-name">
+                Nome da tarefa
+                <input type="text" id="task-title" required="">
+              </label>
+              <label class="field-status">
+                Status
+                <select id="task-status">
+                  <option value="todo">A Fazer</option>
+                  <option value="progress">Progredindo</option>
+                  <option value="done">Concluída</option>
+                </select>
+              </label>
+
+              <div class="form-row-three">
+                <label>
+                  Dia da semana
+                  <select id="task-day">
+                    <option value="segunda">Segunda</option>
+                    <option value="terca">Terça</option>
+                    <option value="quarta">Quarta</option>
+                    <option value="quinta">Quinta</option>
+                    <option value="sexta">Sexta</option>
+                  </select>
+                </label>
+                <label>
+                  Início
+                  <input type="time" id="task-start" required="">
+                </label>
+                <label>
+                  Término
+                  <input type="time" id="task-end" required="">
+                </label>
+              </div>
+            </div>
+            <div class="form-actions">
+              <button type="submit">Salvar tarefa</button>
+              <button type="button" class="ghost" id="cancel-task">Cancelar</button>
+            </div>
+          </form>
+          <div class="agenda" id="agenda">
+        <div class="agenda-day">
+          <header>
+            <h3>Segunda-feira</h3>
+            <span>3 tarefas</span>
+          </header>
+          
+            <div class="task-item" data-id="c2e08550-0db3-4b8a-9da6-386f1692ad20">
+              <div>
+                <p class="task-name">Planejar sprint</p>
+                <p class="task-time">09:00 - 10:30</p>
+              </div>
+              <span class="task-time">Progredindo</span>
+              <select class="task-status-select">
+                <option value="todo">A Fazer</option>
+                <option value="progress" selected="">Progredindo</option>
+                <option value="done">Concluída</option>
+              </select>
+            </div>
+          
+            <div class="task-item" data-id="ca18e7ef-6b87-42e6-a90f-55c8cce3b00f">
+              <div>
+                <p class="task-name">Reunião com equipe</p>
+                <p class="task-time">11:00 - 12:00</p>
+              </div>
+              <span class="task-time">Concluída</span>
+              <select class="task-status-select">
+                <option value="todo">A Fazer</option>
+                <option value="progress">Progredindo</option>
+                <option value="done" selected="">Concluída</option>
+              </select>
+            </div>
+          
+            <div class="task-item" data-id="1388b9a4-3cc2-4093-8f95-429f5e71490a">
+              <div>
+                <p class="task-name">Teste 03</p>
+                <p class="task-time">15:00 - 17:00</p>
+              </div>
+              <span class="task-time">Progredindo</span>
+              <select class="task-status-select">
+                <option value="todo">A Fazer</option>
+                <option value="progress" selected="">Progredindo</option>
+                <option value="done">Concluída</option>
+              </select>
+            </div>
+          
+        </div>
+      
+        <div class="agenda-day">
+          <header>
+            <h3>Terça-feira</h3>
+            <span>1 tarefa</span>
+          </header>
+          
+            <div class="task-item" data-id="1f94f6c2-48f9-453f-8b77-d175575f1885">
+              <div>
+                <p class="task-name">Desenvolver feature</p>
+                <p class="task-time">13:30 - 16:00</p>
+              </div>
+              <span class="task-time">Concluída</span>
+              <select class="task-status-select">
+                <option value="todo">A Fazer</option>
+                <option value="progress">Progredindo</option>
+                <option value="done" selected="">Concluída</option>
+              </select>
+            </div>
+          
+        </div>
+      
+        <div class="agenda-day">
+          <header>
+            <h3>Quarta-feira</h3>
+            <span>1 tarefa</span>
+          </header>
+          
+            <div class="task-item" data-id="d35aaca6-b8c3-42a2-9c4b-5db16308cff6">
+              <div>
+                <p class="task-name">Revisão de código</p>
+                <p class="task-time">09:30 - 11:00</p>
+              </div>
+              <span class="task-time">Progredindo</span>
+              <select class="task-status-select">
+                <option value="todo">A Fazer</option>
+                <option value="progress" selected="">Progredindo</option>
+                <option value="done">Concluída</option>
+              </select>
+            </div>
+          
+        </div>
+      
+        <div class="agenda-day">
+          <header>
+            <h3>Quinta-feira</h3>
+            <span>1 tarefa</span>
+          </header>
+          
+            <div class="task-item" data-id="c9745972-8adc-4c22-a5f9-9ad8fab6d135">
+              <div>
+                <p class="task-name">Testes automatizados</p>
+                <p class="task-time">10:00 - 12:00</p>
+              </div>
+              <span class="task-time">A Fazer</span>
+              <select class="task-status-select">
+                <option value="todo" selected="">A Fazer</option>
+                <option value="progress">Progredindo</option>
+                <option value="done">Concluída</option>
+              </select>
+            </div>
+          
+        </div>
+      
+        <div class="agenda-day">
+          <header>
+            <h3>Sexta-feira</h3>
+            <span>1 tarefa</span>
+          </header>
+          
+            <div class="task-item" data-id="ae317f53-d258-4569-820a-01bd2a34953f">
+              <div>
+                <p class="task-name">Retrospectiva</p>
+                <p class="task-time">15:00 - 16:00</p>
+              </div>
+              <span class="task-time">Concluída</span>
+              <select class="task-status-select">
+                <option value="todo">A Fazer</option>
+                <option value="progress">Progredindo</option>
+                <option value="done" selected="">Concluída</option>
+              </select>
+            </div>
+          
+        </div>
+      </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  
+
+</body></html>
