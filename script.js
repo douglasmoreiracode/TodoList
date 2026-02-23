@@ -362,11 +362,11 @@ function renderAgenda() {
         .map(
           (task) => `
             <div class="task-item" data-id="${task.id}">
-              <div>
+              <div class="task-main">
                 <p class="task-name">${escapeHtml(task.title)}</p>
                 <p class="task-time">${task.start} - ${task.end}</p>
+                <span class="task-status-text">${STATUS_INFO[task.status].label}</span>
               </div>
-              <span class="task-time">${STATUS_INFO[task.status].label}</span>
               <select class="task-status-select">
                 <option value="todo" ${task.status === 'todo' ? 'selected' : ''}>A Fazer</option>
                 <option value="progress" ${task.status === 'progress' ? 'selected' : ''}>Progredindo</option>
