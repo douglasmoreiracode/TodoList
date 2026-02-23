@@ -109,7 +109,9 @@ function loadSavedState() {
     }
 
     if (typeof parsedState.avatarSrc === 'string' && parsedState.avatarSrc.trim()) {
-      avatarPreview.src = parsedState.avatarSrc;
+      if (avatarPreview) {
+        avatarPreview.src = parsedState.avatarSrc;
+      }
     }
   } catch (error) {
     console.warn('Não foi possível carregar o progresso salvo.', error);
@@ -126,10 +128,12 @@ function saveProjectState(showFeedback = false) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
 
     if (showFeedback) {
-      saveProjectBtn.textContent = 'Salvo!';
-      setTimeout(() => {
-        saveProjectBtn.textContent = 'Salvar progresso';
-      }, 1500);
+      if (saveProjectBtn) {
+        saveProjectBtn.textContent = 'Salvo!';
+        setTimeout(() => {
+          saveProjectBtn.textContent = 'Salvar progresso';
+        }, 1500);
+      }
     }
   } catch (error) {
     console.warn('Não foi possível salvar o progresso.', error);
@@ -440,7 +444,9 @@ avatarInput?.addEventListener('change', (event) => {
 
   const reader = new FileReader();
   reader.onload = (e) => {
-    avatarPreview.src = e.target?.result;
+    if (avatarPreview) {
+      avatarPreview.src = e.target?.result;
+    }
     saveProjectState();
   };
   reader.readAsDataURL(file);
@@ -571,7 +577,9 @@ function loadProgress(file) {
         
         // Carregar avatar se disponível
         if (typeof state.avatarSrc === 'string' && state.avatarSrc.trim()) {
-          avatarPreview.src = state.avatarSrc;
+          if (avatarPreview) {
+            avatarPreview.src = state.avatarSrc;
+          }
         }
         
         // Salvar estado e atualizar dashboard

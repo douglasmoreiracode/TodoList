@@ -671,6 +671,7 @@ button.ghost:hover {
 @media (max-width: 719px) {
   .form-grid.form-70-30 { grid-template-columns: 1fr; }
   .form-row-three { grid-template-columns: 1fr; }
+  .form-grid { grid-template-columns: 1fr; }
 }
 
 /* Layout específico para o formulário da agenda: primeira linha 70/30 (aprox via 2col span), segunda linha 3 colunas iguais */
@@ -686,10 +687,6 @@ button.ghost:hover {
     grid-column: 3 / 4; /* ocupa ~33% */
   }
   /* third, fourth, fifth labels (day, start, end) will naturally occupy columns 1,2,3 on next row */
-}
-
-@media (max-width: 719px) {
-  .form-grid { grid-template-columns: 1fr; }
 }
 
 label {
@@ -745,14 +742,14 @@ select:focus {
 }
 
 /* Cada dia como coluna fixa (permite rolagem horizontal) */
-  .agenda-day {
-    flex: 0 0 260px;
-    min-width: 220px;
-    scroll-snap-align: start;
-    padding: 12px;
-    border-radius: 12px;
-    background: var(--accordion-bg);
-    box-shadow: 0 6px 18px rgba(2,6,23,0.03);
+.agenda-day {
+  flex: 0 0 260px;
+  min-width: 220px;
+  scroll-snap-align: start;
+  padding: 12px;
+  border-radius: 12px;
+  background: var(--accordion-bg);
+  box-shadow: 0 6px 18px rgba(2,6,23,0.03);
 }
 
 /* Cabeçalho do dia */
@@ -798,160 +795,181 @@ select:focus {
   background-clip: padding-box;
 }
 
-/* Em telas largas, trocar para grid com as 5 colunas (sem rolagem) */
-@media (min-width: 1100px) {
-  .agenda {
-    display: flex;
-    gap: 28px;
-    overflow-x: auto;
-    padding: 12px 6px;
-    scroll-snap-type: x proximity;
-  }
-  .agenda-day {
-    flex: 0 0 260px;
-    min-width: 220px;
-    padding: 16px;
-  }
-}
-
-/* Agenda: layout horizontal (linha) */
-.agenda {
-  display: flex;
-  gap: 22px;
-  align-items: start;
-  overflow-x: auto;
-  padding: 0 6px;
-  scroll-snap-type: x proximity;
-}
-
-/* Cada dia como coluna */
-  .agenda-day {
-    padding: 12px;
-    border-radius: 12px;
-    min-width: 0;
-    flex: 0 0 260px;
-  }
-
-/* Cabeçalho do dia */
-.agenda-day > header {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  margin-bottom: 12px;
-  border-bottom: 1px solid #595959ad;
-  padding-bottom: 1rem;
-}
-
-/* Itens de tarefa: empilhar conteúdo para evitar sobreposição */
-.task-item {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding: 8px 0;
-  align-items: flex-start;
-  width: 100%;
-}
-
-/* Nome e horário ficam juntos à esquerda */
 .task-item > div {
   max-width: 100%;
 }
 
-/* Select de status menor e alinhado sem quebrar layout */
 .task-status-select {
   min-width: 140px;
   max-width: 100%;
 }
 
-/* Scroll horizontal em telas pequenas */
-@media (max-width: 1099px) {
-  .agenda {
-    display: flex;
-    gap: 18px;
-    padding: 12px 6px;
-    overflow-x: auto;
-    scroll-snap-type: x proximity;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .agenda-day {
-    flex: 0 0 260px;
-    min-width: 220px;
-    scroll-snap-align: start;
-    padding: 12px;
-  }
-
-  .task-status-select { min-width: 120px; }
+/* ===== Responsive cleanup overrides ===== */
+.layout,
+.card,
+.header,
+.agenda-day,
+.task-item,
+.task-item > div {
+  min-width: 0;
 }
 
-/* Responsive adjustments: medium and small screens */
+.counter-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.counter-item:nth-child(1),
+.counter-item:nth-child(2),
+.counter-item:nth-child(3) {
+  width: auto;
+}
+
 @media (max-width: 1100px) {
+  body {
+    padding: 24px clamp(16px, 4vw, 28px);
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .header-actions {
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+
   .grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 16px;
-  }
-
-  .card {
-    padding: 18px;
-  }
-
-  #dashboard-accordion .accordion-header {
-    padding: 0 12px;
-    height: 60px;
-  }
-
-  .agenda {
-    gap: 16px;
-    padding: 12px;
-  }
-
-  .agenda-day {
-    flex: 0 0 220px;
-    min-width: 200px;
-    padding-top: 1rem;
-    margin-bottom: 0; /* avoid overlap on smaller screens */
-    border-radius: 8px;
-  }
-
-  .task-item {
-    margin-left: 0; /* remove left indent on small widths */
-  }
-}
-
-@media (max-width: 700px) {
-  .grid {
-    grid-template-columns: 1fr;
-    gap: 12px;
   }
 
   .inner-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .span-4,
+  .span-3 {
+    grid-column: span 2;
+  }
+
+  .span-2 {
+    grid-column: span 1;
+  }
+}
+
+@media (max-width: 760px) {
+  body {
+    padding: 16px 12px;
+  }
+
+  .top-controls {
+    margin-top: 0;
+  }
+
+  .grid,
+  .inner-grid {
     grid-template-columns: 1fr;
-    gap: 12px;
+    gap: 14px;
+  }
+
+  .span-4,
+  .span-3,
+  .span-2 {
+    grid-column: auto;
   }
 
   .card {
-    padding: 14px;
+    padding: 16px;
+    gap: 16px;
   }
 
-  .timer-display {
-    width: 140px;
-    height: 140px;
+  .progress-item {
+    grid-template-columns: 1fr;
+    gap: 8px;
   }
 
-  .timer-value { font-size: 28px; }
+  .progress-value {
+    text-align: left;
+  }
+
+  .percent-wrapper {
+    gap: 18px;
+    justify-content: center;
+  }
+
+  .donut {
+    width: 150px;
+    height: 150px;
+  }
+
+  .donut::after {
+    width: 98px;
+    height: 98px;
+  }
+
+  .timer-controls {
+    width: 100%;
+  }
+
+  .timer-controls button {
+    flex: 1;
+  }
+
+  .form-actions {
+    justify-content: stretch;
+  }
+
+  .form-actions button {
+    flex: 1;
+  }
 
   .agenda {
+    display: grid;
+    grid-template-columns: 1fr;
     gap: 12px;
-    padding: 10px 6px;
+    overflow: visible;
+    padding: 0;
   }
 
   .agenda-day {
-    flex: 0 0 200px;
-    padding-top: 0.75rem;
-    margin-bottom: 0;
+    flex: 1 1 auto;
+    width: 100%;
+    min-width: 0;
+    padding: 12px;
   }
 
   .task-item {
-    gap: 6px;
+    width: 100%;
+    gap: 8px;
+  }
+
+  .task-status-select {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    padding: 16px;
+  }
+
+  .header h1 {
+    font-size: 22px;
+  }
+
+  .subtitle {
+    font-size: 14px;
+  }
+
+  .header-actions > * {
+    width: 100%;
+  }
+
+  .add-task-button,
+  .header-actions .ghost {
+    width: 100%;
   }
 }
